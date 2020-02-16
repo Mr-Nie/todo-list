@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>node接口案例</title>
+</head>
+<body>
+	<form>
+		用户名：<input id="username" type="input" name="username">
+		密码：<input id="password" type="password" name="password">
+		<button id="login">登录</button>
+	</form>
+</body>
+<script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript">
+	$('#login').click(function () {
+		$.ajax({
+			url:'/login',
+			data:{
+				username:$('#username').val(),
+				password:$('#password').val()
+			},
+			method:'POST',
+			dataType:'json',
+			success(res){
+				if(res.status==1){
+					console.log('登录成功')
+					$.ajax({
+						url:'/info',
+						data:{
+							username:$('#username').val()
+						},
+						dataType:'json',
+						success(res){
+							if(res.status==1){
+								console.log('获取信息成功',res.data)
+							}else{
+								console.log(res.statusMsg);
+							}
+						}
+					})
+				}else{
+					console.log(res.statusMsg);
+				}
+			}
+		})
+		return false;
+	})
+</script>
+</html>
